@@ -1,4 +1,4 @@
-package org.example.creditodebito.adapters.events.mapper;
+package org.example.senha.adapters.events.mapper;
 
 import org.springframework.messaging.MessageHeaders;
 

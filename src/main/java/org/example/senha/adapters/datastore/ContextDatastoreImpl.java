@@ -1,4 +1,4 @@
-package org.example.creditodebito.adapters.datastore;
+package org.example.senha.adapters.datastore;
 
 import org.springframework.stereotype.Component;
 

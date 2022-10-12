@@ -1,7 +1,7 @@
-package org.example.creditodebito.adapters.events.mapper;
+package org.example.senha.adapters.events.mapper;
 
 import lombok.RequiredArgsConstructor;
-import org.example.creditodebito.adapters.datastore.ContextDatastore;
+import org.example.senha.adapters.datastore.ContextDatastore;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.stereotype.Component;
 
