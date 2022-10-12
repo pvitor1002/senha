@@ -1,4 +1,4 @@
-package org.example.senha;
+package org.example.creditodebito;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,9 +6,9 @@ import org.springframework.kafka.annotation.EnableKafka;
 
 @SpringBootApplication
 @EnableKafka
-public class SenhaApplication {
+public class CreditoDebitoApplication {
     public static void main(String[] args) {
-        SpringApplication app = new SpringApplication(SenhaApplication.class);
+        SpringApplication app = new SpringApplication(CreditoDebitoApplication.class);
         app.run(args);
     }
 }

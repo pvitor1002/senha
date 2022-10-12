@@ -1,4 +1,4 @@
-package org.example.senha.adapters.beans;
+package org.example.creditodebito.adapters.beans;
 
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
@@ -18,7 +18,6 @@ import org.springframework.kafka.config.KafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.listener.ContainerProperties;
-import org.springframework.kafka.support.serializer.JsonSerializer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +33,7 @@ public class KafkaConfig {
     private String bootstrapAddress;
 
     @Bean
-    KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, GenericRecord>> senhaListenerContainerFactoryBean(
+    KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, GenericRecord>> creditoDebitoListenerContainerFactoryBean(
             ConsumerFactory<String, GenericRecord> consumerFactory){
         final Map<String, Object> configurations = ((DefaultKafkaConsumerFactory<String, GenericRecord>) consumerFactory)
                 .getConfigurationProperties();

@@ -1,4 +1,4 @@
-server.port: 8084
+server.port: 8083
 
 spring.kafka:
   bootstrap-server: localhost:9092
@@ -7,20 +7,20 @@ spring.kafka:
     ack-mode: MANUAL_IMMEDIATE
     concurrency: 11
     producer:
-      client-id: senha
+      client-id: creditodebito
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
     consumer:
-      client-id: senha
-      group-id: senha
+      client-id: creditodebito
+      group-id: creditodebito
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
       enable-auto-commit: false
       auto-offset-reset: latest
 
-senha:
+creditodebito:
   kafka:
     consumer:
-      topic-processado: comando-senha
+      topics: comando-credito,comando-debito
     producer:
-      topic-atutalizado: senha-processada
+      topic-atutalizado: credito-processado,debito-processado

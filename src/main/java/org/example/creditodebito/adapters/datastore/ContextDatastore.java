@@ -1,4 +1,4 @@
-package org.example.senha.adapters.datastore;
+package org.example.creditodebito.adapters.datastore;
 
 import java.util.Map;
 import java.util.UUID;

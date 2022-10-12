@@ -12,7 +12,7 @@
       "type": "string"
     }
   ],
-  "name": "SenhaProcessada",
+  "name": "DebitoProcessado",
   "namespace": "br.com.PoC",
   "type": "record"
 }
