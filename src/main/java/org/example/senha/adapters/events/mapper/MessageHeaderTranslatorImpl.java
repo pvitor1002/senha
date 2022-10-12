@@ -1,5 +1,7 @@
 package org.example.senha.adapters.events.mapper;
 
+import lombok.RequiredArgsConstructor;
+import org.example.senha.adapters.datastore.ContextDatastore;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.stereotype.Component;
 
@@ -8,7 +10,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
+@RequiredArgsConstructor
 public class MessageHeaderTranslatorImpl implements MessageHeaderTranslator {
+
+    private final ContextDatastore contextDatastore;
 
     @Override
     public MessageHeaders translate(MessageHeaders headers){
@@ -23,6 +28,7 @@ public class MessageHeaderTranslatorImpl implements MessageHeaderTranslator {
             }
         });
 
+        contextDatastore.setHeaders(headers);
         return new MessageHeaders(headersConverted);
     }
 }

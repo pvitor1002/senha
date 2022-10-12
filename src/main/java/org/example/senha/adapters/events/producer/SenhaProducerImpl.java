@@ -1,8 +1,10 @@
 package org.example.senha.adapters.events.producer;
 
+import br.com.PoC.SenhaProcessada;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.example.senha.adapters.events.entity.Request;
 import org.example.senha.adapters.events.entity.Response;
@@ -18,16 +20,18 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class SenhaProducerImpl implements SenhaProducer{
 
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaTemplate<String, GenericRecord> kafkaTemplate;
 
     @Override
-    public void produce(Response response, MessageHeaders headers) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
+    public void produce(MessageHeaders headers) throws JsonProcessingException {
 
-        String event = mapper.writeValueAsString(response);
-        ProducerRecord<String, String> message = new ProducerRecord<>("comando-atualizar", UUID.randomUUID().toString(), event);
+        ProducerRecord<String, GenericRecord> message = new ProducerRecord<>("senha-processada", UUID.randomUUID().toString(), SenhaProcessada.newBuilder()
+                .setCodigo("200")
+                .setMensagem("Senha Validada.")
+                .build()
+        );
 
-        message.headers().add("type", "senha_validada".getBytes());
+        message.headers().add("transaction_id", headers.get("transaction_id").toString().getBytes());
         message.headers().add("replyChannel", headers.get("replyChannel").toString().getBytes());
         message.headers().add("errorChannel", headers.get("errorChannel").toString().getBytes());
         message.headers().add("instanceId", headers.get("instanceId").toString().getBytes());

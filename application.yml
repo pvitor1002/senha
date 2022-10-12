@@ -9,18 +9,18 @@ spring.kafka:
     producer:
       client-id: senha
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
     consumer:
       client-id: senha
       group-id: senha
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
       enable-auto-commit: false
       auto-offset-reset: latest
 
 senha:
   kafka:
     consumer:
-      topic-processado: transferencia-processada
+      topic-processado: comando-senha
     producer:
-      topic-atutalizado: comando-atualizar
+      topic-atutalizado: senha-processada

@@ -1,5 +1,10 @@
 package org.example.senha.adapters.beans;
 
+import io.confluent.kafka.serializers.KafkaAvroDeserializer;
+import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
+import io.confluent.kafka.serializers.KafkaAvroSerializer;
+import io.confluent.kafka.serializers.KafkaAvroSerializerConfig;
+import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -29,15 +34,15 @@ public class KafkaConfig {
     private String bootstrapAddress;
 
     @Bean
-    KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, String>> senhaListenerContainerFactoryBean(
-            ConsumerFactory<String, String> consumerFactory){
-        final Map<String, Object> configurations = ((DefaultKafkaConsumerFactory<String, String>) consumerFactory)
+    KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, GenericRecord>> senhaListenerContainerFactoryBean(
+            ConsumerFactory<String, GenericRecord> consumerFactory){
+        final Map<String, Object> configurations = ((DefaultKafkaConsumerFactory<String, GenericRecord>) consumerFactory)
                 .getConfigurationProperties();
         final Map<String, Object> mapaConfiguration = new HashMap<>(configurations);
 
-        DefaultKafkaConsumerFactory<String, String> consumerFactoryEdit = new DefaultKafkaConsumerFactory<>(mapaConfiguration);
+        DefaultKafkaConsumerFactory<String, GenericRecord> consumerFactoryEdit = new DefaultKafkaConsumerFactory<>(mapaConfiguration);
 
-        ConcurrentKafkaListenerContainerFactory<String, String> containerFactory = new ConcurrentKafkaListenerContainerFactory<>();
+        ConcurrentKafkaListenerContainerFactory<String, GenericRecord> containerFactory = new ConcurrentKafkaListenerContainerFactory<>();
         containerFactory.setConsumerFactory(consumerFactoryEdit);
         //containerFactory.setErrorHandler(errorHandler);
         containerFactory.setConcurrency(Integer.parseInt(concurrency));
@@ -46,28 +51,31 @@ public class KafkaConfig {
     }
 
     @Bean
-    ConsumerFactory<String, String> consumerFactory(){
+    ConsumerFactory<String, GenericRecord> consumerFactory(){
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "senha");
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "transferencia");
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaAvroDeserializer.class);
+        props.put(KafkaAvroDeserializerConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://localhost:8081/");
+        props.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG, true);
         return new DefaultKafkaConsumerFactory<>(props);
     }
 
     @Bean
-    KafkaTemplate<String, String> getKafkaTemplate(ProducerFactory<String, String> producerFactory){
-        KafkaTemplate<String, String> template = new KafkaTemplate<>(producerFactory);
-        template.setDefaultTopic("transferencia-finalizada");
+    KafkaTemplate<String, GenericRecord> getKafkaTemplate(ProducerFactory<String, GenericRecord> producerFactory){
+        KafkaTemplate<String, GenericRecord> template = new KafkaTemplate<>(producerFactory);
+        template.setDefaultTopic("transferencia-concluida");
         return template;
     }
 
     @Bean
-    ProducerFactory<String, String> producerFactory(){
+    ProducerFactory<String, GenericRecord> producerFactory(){
         Map<String, Object> props = new HashMap<>();
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class);
+        props.put(KafkaAvroSerializerConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://localhost:8081/");
         return new DefaultKafkaProducerFactory<>(props);
     }
 }

@@ -5,5 +5,5 @@ import org.example.senha.adapters.events.entity.Response;
 import org.springframework.messaging.MessageHeaders;
 
 public interface SenhaProducer {
-    void produce(Response response, MessageHeaders headers) throws JsonProcessingException;
+    void produce(MessageHeaders headers) throws JsonProcessingException;
 }
