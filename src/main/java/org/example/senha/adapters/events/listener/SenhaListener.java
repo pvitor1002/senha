@@ -1,10 +1,7 @@
 package org.example.senha.adapters.events.listener;
 
 import br.com.PoC.ComandoSenha;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.example.senha.adapters.events.entity.Request;
-import org.example.senha.adapters.events.entity.Response;
 import org.example.senha.adapters.events.mapper.MessageHeaderTranslator;
 import org.example.senha.adapters.events.mapper.SenhaMapper;
 import org.example.senha.adapters.events.producer.SenhaProducer;
@@ -14,7 +11,6 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.Headers;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
